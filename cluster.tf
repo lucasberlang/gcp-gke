@@ -22,7 +22,7 @@ locals {
 resource "google_container_cluster" "this" {
   provider = google-beta
 
-  name            = "${local.prefix}${var.name}-gke01-${var.labels.environment}"
+  name            = format("${local.prefix}${var.name}-gke%.2d-${var.labels.environment}", var.offset)
   description     = var.description
   project         = var.project_id
   resource_labels = var.labels
@@ -69,6 +69,10 @@ resource "google_container_cluster" "this" {
   enable_kubernetes_alpha     = var.enable_kubernetes_alpha
   enable_tpu                  = var.enable_tpu
 
+  workload_identity_config {
+    workload_pool = var.workload_identity == true ? "${var.project_id}.svc.id.goog" : null
+  }
+
   release_channel {
     channel = var.release_channel
   }
@@ -82,9 +86,6 @@ resource "google_container_cluster" "this" {
   }
 
   master_auth {
-    username = var.basic_auth_username
-    password = var.basic_auth_password
-
     client_certificate_config {
       issue_client_certificate = var.issue_client_certificate
     }
@@ -171,7 +172,7 @@ resource "google_container_cluster" "this" {
     node_config {
       service_account = lookup(var.node_pools[0], "service_account", local.service_account)
       workload_metadata_config {
-        node_metadata = var.node_metadata
+        mode = var.mode_metadata
       }
     }
   }
@@ -217,6 +218,14 @@ resource "google_container_cluster" "this" {
     }
   }
 
+  dynamic "dns_config" {
+    for_each = var.dns_config
+
+    content {
+      cluster_dns       = dns_config.value.cluster_dns
+      cluster_dns_scope = dns_config.value.cluster_dns_scope
+    }
+  }
 }
 
 resource "google_container_node_pool" "pools" {
@@ -265,7 +274,7 @@ resource "google_container_node_pool" "pools" {
   }
 
   node_config {
-    image_type   = lookup(each.value, "image_type", "COS")
+    image_type   = lookup(each.value, "image_type", "COS_CONTAINERD")
     machine_type = lookup(each.value, "machine_type", "n1-standard-2")
 
     dynamic "taint" {

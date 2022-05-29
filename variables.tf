@@ -19,6 +19,12 @@ variable "name" {
   type        = string
 }
 
+variable "offset" {
+  description = "The offset to be added to the GKE counter"
+  type        = number
+  default     = 1
+}
+
 variable "description" {
   description = "The description of the cluster"
   type        = string
@@ -133,6 +139,12 @@ variable "enable_intranode_visibility" {
   default     = false
 }
 
+variable "workload_identity" {
+  description = "Workload Identity allows Kubernetes service accounts to act as a user-managed Google IAM Service Account."
+  type        = bool
+  default     = false
+}
+
 variable "enable_kubernetes_alpha" {
   description = "Should be true to enable Kubernetes alpha features"
   type        = bool
@@ -161,18 +173,6 @@ variable "enable_pod_security_policy" {
   description = "Should be true to enable PodSecurityPolicy"
   type        = bool
   default     = false
-}
-
-variable "basic_auth_username" {
-  description = "The username to be used with Basic Authentication"
-  type        = string
-  default     = ""
-}
-
-variable "basic_auth_password" {
-  description = "The password to be used with Basic Authentication"
-  type        = string
-  default     = ""
 }
 
 variable "issue_client_certificate" {
@@ -258,10 +258,10 @@ variable "maintenance_recurrence" {
   default     = ""
 }
 
-variable "node_metadata" {
+variable "mode_metadata" {
   description = "Specifies how node metadata is exposed to the workload running on the node"
   type        = string
-  default     = "UNSPECIFIED"
+  default     = "MODE_UNSPECIFIED"
 }
 
 variable "initial_node_count" {
@@ -324,6 +324,17 @@ variable "database_encryption" {
     state    = "DECRYPTED"
     key_name = ""
   }]
+}
+
+variable "dns_config" {
+  description = "Configuration for Using Cloud DNS for GKE"
+  type = list(
+    object({
+      cluster_dns       = string,
+      cluster_dns_scope = string
+    })
+  )
+  default = []
 }
 
 ######

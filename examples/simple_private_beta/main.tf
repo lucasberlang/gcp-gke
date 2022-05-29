@@ -55,7 +55,8 @@ module "gke" {
   enable_private_endpoint = false
   enable_private_nodes    = true
   master_ipv4_cidr_block  = "172.16.0.0/28"
-  release_channel         = "STABLE"
+
+  workload_identity = false
 
   master_authorized_networks = [
     {
@@ -66,6 +67,13 @@ module "gke" {
       cidr_block   = "0.0.0.0/0"
       display_name = "shell"
     }
+  ]
+
+  node_pools = [
+    {
+      name         = "default-node-pool"
+      machine_type = "e2-standard-8"
+    },
   ]
 
   istio     = var.istio

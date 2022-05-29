@@ -4,7 +4,6 @@ data "google_client_config" "default" {
 }
 
 provider "kubernetes" {
-  load_config_file       = false
   host                   = module.gke.endpoint
   token                  = data.google_client_config.default.access_token
   cluster_ca_certificate = base64decode(module.gke.ca_certificate)
@@ -48,17 +47,6 @@ resource "kubernetes_deployment" "nginx" {
 
             initial_delay_seconds = 30
             timeout_seconds       = 5
-          }
-
-          resources {
-            limits {
-              cpu    = "0.5"
-              memory = "512Mi"
-            }
-            requests {
-              cpu    = "250m"
-              memory = "50Mi"
-            }
           }
         }
       }
