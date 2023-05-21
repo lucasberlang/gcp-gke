@@ -37,7 +37,7 @@ module "gke" {
 | Name | Version |
 |------|---------|
 | <a name="provider_google"></a> [google](#provider\_google) | 3.90.1 |
-| <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | 4.15.0 |
+| <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | 4.64.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 2.3.1 |
 
 ## Modules
@@ -104,6 +104,7 @@ No modules.
 | <a name="input_network_policy"></a> [network\_policy](#input\_network\_policy) | Should be true to enable the network policy of the cluster | `bool` | `true` | no |
 | <a name="input_network_policy_provider"></a> [network\_policy\_provider](#input\_network\_policy\_provider) | The network policy provider | `string` | `"CALICO"` | no |
 | <a name="input_network_project_id"></a> [network\_project\_id](#input\_network\_project\_id) | The project ID to host the VPC | `string` | `null` | no |
+| <a name="input_node_labels"></a> [node\_labels](#input\_node\_labels) | The Kubernetes labels (key/value pairs) to be applied to each node. The kubernetes.io/ and k8s.io/ prefixes are reserved by Kubernetes Core components and cannot be specified. | `map(string)` | `{}` | no |
 | <a name="input_node_pools"></a> [node\_pools](#input\_node\_pools) | List of maps containing node pools | `list(map(string))` | <pre>[<br>  {<br>    "name": "default-node-pool"<br>  }<br>]</pre> | no |
 | <a name="input_node_pools_oauth_scopes"></a> [node\_pools\_oauth\_scopes](#input\_node\_pools\_oauth\_scopes) | Map of lists containing node oauth scopes by node-pool name | `map(list(string))` | <pre>{<br>  "all": [<br>    "https://www.googleapis.com/auth/cloud-platform"<br>  ],<br>  "default-node-pool": []<br>}</pre> | no |
 | <a name="input_node_pools_taints"></a> [node\_pools\_taints](#input\_node\_pools\_taints) | Map of lists containing node taints by node-pool name | `map(list(object({ key = string, value = string, effect = string })))` | <pre>{<br>  "all": [],<br>  "default-node-pool": []<br>}</pre> | no |

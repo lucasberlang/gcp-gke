@@ -326,17 +326,6 @@ variable "database_encryption" {
   }]
 }
 
-variable "dns_config" {
-  description = "Configuration for Using Cloud DNS for GKE"
-  type = list(
-    object({
-      cluster_dns       = string,
-      cluster_dns_scope = string
-    })
-  )
-  default = []
-}
-
 ######
 # google_container_node_pool
 ######
@@ -412,6 +401,12 @@ variable "service_account" {
 
 variable "labels" {
   description = "A mapping of labels to assign to the GCE resource"
+  type        = map(string)
+  default     = {}
+}
+
+variable "node_labels" {
+  description = "The Kubernetes labels (key/value pairs) to be applied to each node. The kubernetes.io/ and k8s.io/ prefixes are reserved by Kubernetes Core components and cannot be specified."
   type        = map(string)
   default     = {}
 }

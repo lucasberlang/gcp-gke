@@ -76,6 +76,10 @@ module "gke" {
     },
   ]
 
+  node_labels = {
+    "starburstpool" = "default-node-pool"
+  }
+
   istio     = var.istio
   dns_cache = var.dns_cache
   labels    = var.labels

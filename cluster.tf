@@ -218,14 +218,6 @@ resource "google_container_cluster" "this" {
     }
   }
 
-  dynamic "dns_config" {
-    for_each = var.dns_config
-
-    content {
-      cluster_dns       = dns_config.value.cluster_dns
-      cluster_dns_scope = dns_config.value.cluster_dns_scope
-    }
-  }
 }
 
 resource "google_container_node_pool" "pools" {
@@ -276,6 +268,7 @@ resource "google_container_node_pool" "pools" {
   node_config {
     image_type   = lookup(each.value, "image_type", "COS_CONTAINERD")
     machine_type = lookup(each.value, "machine_type", "n1-standard-2")
+    labels       = var.node_labels
 
     dynamic "taint" {
       for_each = concat(

@@ -2,7 +2,7 @@ style: gitlab
 template: CHANGELOG.tpl.md
 info:
   title: CHANGELOG
-  repository_url: "https://gitlab.bluetab.net/terraform-bankia/modules/gcp-gke"
+  repository_url: "https://github.com/lucasberlang/gcp-gke.git"
 options:
   header:
     pattern: "^(.*)$"
